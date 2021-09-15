@@ -13,7 +13,7 @@ This is a webextension that allows converting the tracklists on BBC Sounds shows
 
 - Install the extension
 
-- Click on the extension icon in the toolbar while on a BBC sounds desktop (https://www.bbc.co.uk/sounds/play/xxxxxx) 
+- Click on the extension icon in the toolbar while on a BBC sounds desktop programme page (https://www.bbc.co.uk/sounds/play/xxxxxx) 
 
 # Installation
 

@@ -2,6 +2,7 @@
   "manifest_version": 2,
   "name": "sounds2spotify",
   "version": "0.1.0",
+  "key": "gddnfnamlfpbelfgmlfmgondgieglfdd",
   "browser_specific_settings": {
     "gecko": {
       "id": "sounds2spotify@lukebriggs.dev"

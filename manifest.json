@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "sounds2spotify",
+  "version": "0.1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "sounds2spotify@lukebriggs.dev"
+    }
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/16.png",
+      "24": "icons/24.png",
+      "32": "icons/32.png"
+    },
+    "default_title": "Sounds2Spotify"
+  },
+  "icons": {
+    "48": "icons/48.png",
+    "96": "icons/96.png"
+  },
+  "background": {
+    "scripts":["config.js","background.js"]
+  },
+  "permissions": [
+    "*://*.bbc.co.uk/sounds/*",
+    "https://*.spotify.com/*",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "identity"
+  ],
+  "description": "Converts BBC tracklist into spotify playlist"
+}

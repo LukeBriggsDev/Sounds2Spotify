@@ -1,12 +1,14 @@
 var tracklist
 var tracklist_name
 var tracklist_date
+
 // Button clicked
 chrome.browserAction.onClicked.addListener(function (tab){
+    // Scan for spotify links
     chrome.tabs.executeScript({
         file: "/bbc2spotify.js"
     })
-
+    // Base URL
     get_url = "https://accounts.spotify.com/authorize?"
     get_url += `client_id=${client_id}&`
     get_url += "response_type=code&"
@@ -19,11 +21,12 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.type == "tracklist"){
             sendResponse({farewell: "recieved tracklist"});
-            console.log(request.track_list)
+
             tracklist = request.track_list
             tracklist_name = request.name
             tracklist_date = request.date
 
+            // Authenticate and make playlist
             chrome.identity.launchWebAuthFlow(
                 {
                     url: get_url,
@@ -34,9 +37,10 @@ chrome.runtime.onMessage.addListener(
 );
 
 function authenticateSpotify(response){
+    // Get parameters from response
     var urlParams = new URLSearchParams(response.replace(chrome.identity.getRedirectURL(), ''))
-    console.log(urlParams.get("code"))
 
+    // POST request for access token
     var authRequest = new Request("https://accounts.spotify.com/api/token",
     {
         method: "POST",
@@ -53,6 +57,7 @@ function authenticateSpotify(response){
         }) 
     })
 
+    // Create playlist
     fetch(authRequest).then(function(response){
         response.json().then(function(json){
             createPlaylist(json.access_token)
@@ -61,14 +66,17 @@ function authenticateSpotify(response){
 }
 
 async function createPlaylist(access_token){
+
     id = await getSpotifyID(access_token)
-    console.log(id)
+
     var trackURIS = []
+    
+    // Add create Spotify URIs from track links
     for (var track of Object.values(tracklist)){
         trackURIS.push(`"spotify:track:${track.replace("https://open.spotify.com/track/", "")}"`)
     }
-    console.log(trackURIS)
 
+    // Create new playlist
     var request = new Request(`https://api.spotify.com/v1/users/${id}/playlists`,
     {
         method: "POST",
@@ -87,6 +95,7 @@ async function createPlaylist(access_token){
     const responseJSON = await response.json()
     const playlistID = await responseJSON.id
 
+    // Add tracklist songs to newly created playlist
     var request = new Request(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
     {
         method: "POST",
@@ -102,6 +111,7 @@ async function createPlaylist(access_token){
 
     var response = await fetch(request)
 
+    // Open tab to new playlist
     chrome.tabs.create({ url: `https://open.spotify.com/playlist/${playlistID}`})
 
 }

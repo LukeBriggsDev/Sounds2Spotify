@@ -1,6 +1,7 @@
 var tracklist
 var tracklist_name
 var tracklist_date
+var get_url
 
 // Button clicked
 chrome.browserAction.onClicked.addListener(function (tab){
@@ -73,7 +74,7 @@ async function createPlaylist(access_token){
     
     // Add create Spotify URIs from track links
     for (var track of Object.values(tracklist)){
-        trackURIS.push(`"spotify:track:${track.replace("https://open.spotify.com/track/", "")}"`)
+        trackURIS.push(`"${track.replace("https://open.spotify.com/track/", "spotify:track:")}"`)
     }
 
     // Create new playlist

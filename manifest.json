@@ -14,14 +14,15 @@
       "24": "icons/24.png",
       "32": "icons/32.png"
     },
-    "default_title": "Sounds2Spotify"
+    "default_title": "Sounds2Spotify",
+    "default_popup": "popup/api_key.html"
   },
   "icons": {
     "48": "icons/48.png",
     "96": "icons/96.png"
   },
   "background": {
-    "scripts":["config.js","background.js"]
+    "scripts":["background.js"]
   },
   "permissions": [
     "*://*.bbc.co.uk/sounds/*",

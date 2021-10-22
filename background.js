@@ -3,8 +3,11 @@ var tracklist_name
 var tracklist_date
 var get_url
 
+var client_id
+var client_secret
+
 // Button clicked
-chrome.browserAction.onClicked.addListener(function (tab){
+function runScript() {
     // Scan for spotify links
     chrome.tabs.executeScript({
         file: "/bbc2spotify.js"
@@ -15,10 +18,11 @@ chrome.browserAction.onClicked.addListener(function (tab){
     get_url += "response_type=code&"
     get_url += `redirect_uri=${encodeURIComponent(chrome.identity.getRedirectURL())}&`
     get_url += "scope=playlist-modify-public"
-})
+}
 
-// On playlist scan finish
+
 chrome.runtime.onMessage.addListener(
+    // On playlist scan finish 
     function(request, sender, sendResponse) {
         if (request.type == "tracklist"){
             sendResponse({farewell: "recieved tracklist"});
@@ -34,8 +38,23 @@ chrome.runtime.onMessage.addListener(
                     interactive: true,
                 }, authenticateSpotify)
         }
+        // Recieve API details
+        if (request.type == "api_keys"){
+            sendResponse({farewell: "recieved api_keys"});
+            client_id = request.client_id
+            client_secret = request.client_secret
+            // Start request
+            runScript();
+        }
     }
+
+    
+    
+
 );
+
+// Recieve api details
+chrome.runtime.onMessage.add
 
 function authenticateSpotify(response){
     // Get parameters from response
